@@ -63,6 +63,27 @@ SELECT
 # 3). What days did more than 1% of requests lead to errors?
 #===========================================================
 
+errors = """
+
+SELECT
+
+    CASE
+
+        WHEN log.path != '200 OK' THEN CONCAT('This is the percentage not working: ', COUNT(log.path), ' % ')
+        END
+
+    FROM log
+
+    GROUP BY log.path
+
+    ORDER BY log.path
+
+    ASC
+
+    LIMIT 2;
+
+         """
+
 #===========================================================
 # Generate the report from SQL queries
 #===========================================================
@@ -114,6 +135,9 @@ def top_authors():
         print(" {} --- {} total views".format(authors_name, authors_views))
 
 # 3). Query 3
+
+def display_errors():
+
 
 #===========================================================
 # Launch Python Application
