@@ -129,7 +129,10 @@ def top_authors():
 # 3). Query 3
 
 def display_errors():
+    display_errors = connect_DB(errors)
+    title_desc("Days where more than {1%} lead to errors")
 
+    # For loop through content
 
 #===========================================================
 # Launch Python Application
