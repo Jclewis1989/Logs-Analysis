@@ -73,7 +73,22 @@ SELECT
 
 errors = """
 
+SELECT
 
+    log.time AS day,
+    SUM(log.id) * 100.00 / (SELECT COUNT(*) FROM log) AS error_percentage
+
+    FROM log
+
+    WHERE log.status != '200 OK'
+
+    GROUP BY log.time
+
+    HAVING COUNT(log.status) > 1
+
+    ORDER BY COUNT(log.time) / COUNT(*)
+
+    DESC;
          """
 
 #===========================================================
