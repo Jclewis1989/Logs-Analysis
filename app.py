@@ -42,16 +42,18 @@ authors = """
 
 SELECT 
     authors.name AS authors_name,
-    SUM(articles.author) AS authors_views
+    COUNT(articles.author) AS authors_views
 
     FROM articles
 
-    JOIN author ON articles.author=authors.id
+    JOIN authors ON articles.author=authors.id
     JOIN log ON articles.slug=substr(log.path, 10)
+
+    WHERE log.status = '200 OK'
 
     GROUP BY authors.name
 
-    ORDER BY COUNT(author_views)
+    ORDER BY authors_views
 
     DESC;
 
