@@ -6,11 +6,11 @@ import psycopg2
 # 1). What are the most popular three articles of all time?
 #===========================================================
 
-# artilces.title has an alias of article_title
+# articles.title has an alias of article_title
 # article_views is the alias for when we use the aggregate function COUNT(). This will generate the total number of articles per author
 # WHERE clause to make certain we are counting only the succesfully reached articles
 # GROUP BY clause to tell the database how we want our data displayed
-# ORDER BY clause
+# ORDER BY clause COUNT(artilces.title) DESC with a limit of only 3 records
 
 articles = """
 
@@ -37,6 +37,14 @@ SELECT
 #===========================================================
 # 2). Who are the most popular authors of all time?
 #===========================================================
+
+# authors.name has an alias of authors_name
+# Using aggregate function COUNT() to count total articles each author has written
+# Give this an alias of authors_views
+# Pull from articles table as we are 'inner' joining authors and log tables
+# WHERE clause to determine which articles have beeen successfully reached
+# GROUP BY to tell database how we want our data displayed
+# ORDER BY in DESC order by authors_views which is an alias for a COUNT(articles.author)
 
 authors = """
 
@@ -65,22 +73,6 @@ SELECT
 
 errors = """
 
-SELECT
-
-    CASE
-
-        WHEN log.path != '200 OK' THEN CONCAT('This is the percentage not working: ', COUNT(log.path), ' % ')
-        END
-
-    FROM log
-
-    GROUP BY log.path
-
-    ORDER BY log.path
-
-    ASC
-
-    LIMIT 2;
 
          """
 
