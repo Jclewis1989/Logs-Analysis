@@ -17,6 +17,7 @@ articles = """
 SELECT 
     articles.title AS article_title,
     COUNT(articles.title) AS article_views
+
     FROM articles
 
     JOIN log ON articles.slug=substr(log.path, 10)
@@ -37,7 +38,24 @@ SELECT
 # 2). Who are the most popular authors of all time?
 #===========================================================
 
+authors = """
 
+SELECT 
+    authors.name AS authors_name,
+    SUM(articles.author) AS authors_views
+
+    FROM articles
+
+    JOIN author ON articles.author=authors.id
+    JOIN log ON articles.slug=substr(log.path, 10)
+
+    GROUP BY authors.name
+
+    ORDER BY COUNT(author_views)
+
+    DESC;
+
+          """
 
 #===========================================================
 # 3). What days did more than 1% of requests lead to errors?
@@ -86,6 +104,13 @@ def top_articles():
 
 # 2). Query 2
 
+def top_authors():
+    top_authors = connect_DB(authors)
+    title_desc("Most popular authors of all time")
+
+    for authors_name, authors_views in top_authors:
+        print(" {} --- {} total views".format(authors_name, authors_views))
+
 # 3). Query 3
 
 #===========================================================
@@ -94,3 +119,4 @@ def top_articles():
 
 if __name__ == '__main__':
     top_articles()
+    top_authors()
