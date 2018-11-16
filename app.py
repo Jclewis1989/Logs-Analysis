@@ -74,8 +74,9 @@ SELECT
 errors = """
 
 SELECT
-    log.time AS day,
-    COUNT(log.time)/(SELECT SUM(CAST(log.status AS INT)) FROM log) > 1 AS percentage_total
+
+    TO_CHAR(log.time, 'DD FMMONTH YYYY') AS format_date,
+    (SELECT SUM(CAST(log.time AS INT) * 100.0/(SELECT COUNT(log.status)) FROM log) AS percentage_total
 
     FROM log
 
@@ -83,9 +84,7 @@ SELECT
 
     GROUP BY log.time
 
-    ORDER BY log.time
-
-    DESC;
+    HAVING COUNT(log.status) > 1.0;
 
          """
 
