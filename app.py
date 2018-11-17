@@ -44,6 +44,29 @@ SELECT authors.name AS authors_name,
 
 errors = """
 
+SELECT 
+
+    *
+
+    FROM
+
+        (SELECT
+            TO_CHAR(log.time, 'MM DD YYYY') AS total_date,
+            ROUND(100.0 * SUM(
+                CASE log.status WHEN '200 OK' THEN 0 ELSE 1 END) 
+                /
+                COUNT(log.status), 2) AS total_percentage
+
+                FROM log
+
+                GROUP BY TO_CHAR(log.time, 'MM DD YYYY')
+
+                ORDER BY total_percentage
+            ) AS date_and_percentage
+
+        GROUP BY date_and_percentage
+
+        HAVING COUNT(date_and_percentage) > 1;
          """
 
 # ===========================================================
