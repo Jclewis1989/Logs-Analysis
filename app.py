@@ -41,33 +41,21 @@ SELECT authors.name AS authors_name,
 # ===========================================================
 # 3). What days did more than 1% of requests lead to errors?
 # ===========================================================
-
 errors = """
 
-SELECT 
+SELECT * 
+    FROM (SELECT Date(log.time), 
+    ROUND(100.0 * Sum(CASE log.status 
+    WHEN '200 OK' THEN 0 
+    ELSE 1 
+    end) / COUNT(log.status), 3) AS error_data
+    FROM  log 
+    GROUP BY Date(log.time) 
+    ORDER BY error_data DESC) AS query_data
+    WHERE error_data > 1; 
 
-    *
-
-    FROM
-
-        (SELECT
-            TO_CHAR(log.time, 'MM DD YYYY') AS total_date,
-            ROUND(100.0 * SUM(
-                CASE log.status WHEN '200 OK' THEN 0 ELSE 1 END) 
-                /
-                COUNT(log.status), 2) AS total_percentage
-
-                FROM log
-
-                GROUP BY TO_CHAR(log.time, 'MM DD YYYY')
-
-                ORDER BY total_percentage
-            ) AS date_and_percentage
-
-        GROUP BY date_and_percentage
-
-        HAVING COUNT(date_and_percentage) > 1;
          """
+
 
 # ===========================================================
 # Generate the report from SQL queries
@@ -120,6 +108,9 @@ def top_authors():
 def display_errors():
     display_errors = connect_DB(errors)
     title_desc("Days where more than {1%} lead to errors")
+
+    for error_data, query_data in display_errors:
+        print(" {} --- {} total error percentage".format(error_data, query_data))
 
 # ===========================================================
 # Launch Python Application
