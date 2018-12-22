@@ -43,16 +43,15 @@ SELECT authors.name AS authors_name,
 # ===========================================================
 errors = """
 
-SELECT * 
-    FROM (SELECT Date(log.time), 
-    ROUND(100.0 * Sum(CASE log.status 
-    WHEN '200 OK' THEN 0 
-    ELSE 1 
+SELECT * FROM (SELECT Date(log.time),
+    ROUND(100.0 * Sum(CASE log.status
+    WHEN '200 OK' THEN 0
+    ELSE 1
     end) / COUNT(log.status), 3) AS error_data
-    FROM  log 
-    GROUP BY Date(log.time) 
+    FROM  log
+    GROUP BY Date(log.time)
     ORDER BY error_data DESC) AS query_data
-    WHERE error_data > 1; 
+    WHERE error_data > 1;
 
          """
 
@@ -78,9 +77,9 @@ def connect_DB(queries):
     conn.close()
     return results
 
-# ===========================================================
+# ==========================================================
 # Create a function per each query from above
-# ===========================================================
+# ==========================================================
 
 # 1). Query 1
 
@@ -90,7 +89,7 @@ def top_articles():
     title_desc("Top 3 most viewed articles of all time")
 
     for article_title, article_views in top_articles:
-        print(" {} --- {} views".format(article_title, article_views))
+        print(" {} --- {} Articles".format(article_title, article_views))
 
 # 2). Query 2
 
@@ -100,7 +99,7 @@ def top_authors():
     title_desc("Most popular authors of all time")
 
     for authors_name, authors_views in top_authors:
-        print(" {} --- {} total views".format(authors_name, authors_views))
+        print(" {} --- {} Total Views".format(authors_name, authors_views))
 
 # 3). Query 3
 
@@ -110,7 +109,7 @@ def display_errors():
     title_desc("Days where more than {1%} lead to errors")
 
     for error_data, query_data in display_errors:
-        print(" {} --- {} total error percentage".format(error_data, query_data))
+        print(" {} --- {} Percentage".format(error_data, query_data))
 
 # ===========================================================
 # Launch Python Application
