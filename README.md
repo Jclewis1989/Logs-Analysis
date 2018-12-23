@@ -1,5 +1,5 @@
 # Logs-Analysis
-A python application providing three views, each with a query to pull information from an SQL database
+A python application providing three queries, each pulling information from an SQL database
 
 ## The virtual machine
 This project makes use of the same Linux-based virtual machine (VM) as the preceding lessons.
@@ -38,8 +38,8 @@ Get a sense for what sort of information is in each column of these tables.
 
 The database includes three tables:
 
-The authors table includes information about the authors of articles.
-The articles table includes the articles themselves.
+The ``` sh authors ``` table includes information about the authors of articles.
+The ``` sh articles ``` table includes the articles themselves.
 The log table includes one entry for each time a user has accessed the site.
 As you explore the data, you may find it useful to take notes! Don't try to memorize all the columns. Instead, write down a description of the column names and what kind of values are found in those columns.
 
