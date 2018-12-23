@@ -44,10 +44,10 @@ SELECT authors.name AS authors_name,
 errors = """
 
 SELECT * FROM (SELECT Date(log.time),
-    ROUND(100.0 * Sum(CASE log.status
+    ROUND(100.0 * SUM(CASE log.status
     WHEN '200 OK' THEN 0
     ELSE 1
-    end) / COUNT(log.status), 3) AS error_data
+    END) / COUNT(log.status), 3) AS error_data
     FROM  log
     GROUP BY Date(log.time)
     ORDER BY error_data DESC) AS query_data
